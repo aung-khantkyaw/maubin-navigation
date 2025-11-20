@@ -235,7 +235,7 @@ export const Header = () => {
       <div className="mx-auto max-w-screen-xl flex h-14 items-center gap-3 px-4 sm:px-6">
         <div className="flex items-center gap-2 min-w-0 flex-shrink-0">
           <div className="h-8 w-8 rounded-md flex items-center justify-center bg-emerald-500/10 text-emerald-700 text-[10px] font-semibold shadow-sm select-none">
-            <img src="/myanmar_explorer.png" alt="Logo" className="h-6 w-6" />
+            <img src="/maubin_navigation.png" alt="Logo" className="h-6 w-6" />
           </div>
           <h1 className={brandClasses} aria-label={t("brand")}>
             {t("brand")}

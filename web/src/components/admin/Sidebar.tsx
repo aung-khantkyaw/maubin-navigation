@@ -74,7 +74,7 @@ const Sidebar = ({
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-lg shadow-emerald-500/20">
               <img
-                src="/myanmar_explorer.png"
+                src="/maubin_navigation.png"
                 alt="Logo"
                 className="h-10 w-10 rounded-full border-2 border-emerald-500/30 object-cover"
               />

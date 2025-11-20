@@ -10,7 +10,7 @@ export default function LoginPage() {
       <div className="flex flex-col gap-6 bg-white/95 p-6 shadow-2xl md:p-12">
         <div className="flex justify-center gap-2 md:justify-start">
           <div className="flex size-20 items-center justify-center rounded-3xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-600 shadow-lg">
-            <img src="/myanmar_explorer.png" alt="Logo" className="size-16" />
+            <img src="/maubin_navigation.png" alt="Logo" className="size-16" />
           </div>
         </div>
         <div className="flex flex-1 items-center justify-center">

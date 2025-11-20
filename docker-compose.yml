@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:17-3.4
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: neondb_owner
+      POSTGRES_PASSWORD: npg_sdi6qW0DklOx
+      POSTGRES_DB: maubin-navigation
+    ports:
+      - "5432:5432" # Maps host port 5432 to container port 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data # Persist data in a named volume
+
+volumes:
+  db_data: 

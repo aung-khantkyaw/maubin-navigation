@@ -11,23 +11,57 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# def get_connection():
+#     """Get database connection using environment variables"""
+#     host = os.environ.get('DB_HOST', '').strip()
+#     database = os.environ.get('DB_NAME', '').strip()
+#     user = os.environ.get('DB_USER', '').strip()
+#     password = os.environ.get('DB_PASSWORD', '').strip()
+#     port = os.environ.get('DB_PORT', '5432').strip()
+    
+#     print(f"Connecting to: {host}:{port}/{database} as {user}")
+    
+#     return psycopg2.connect(
+#         host=host,
+#         database=database,
+#         user=user,
+#         password=password,
+#         port=int(port),
+#         sslmode='require',
+#         connect_timeout=10
+#     )
+
 def get_connection():
     """Get database connection using environment variables"""
-    host = os.environ.get('DB_HOST', '').strip()
+    db_url = os.environ.get('DATABASE_URL', '').strip().strip('"').strip("'")
+    if db_url:
+        if '://' not in db_url:
+            print(f"Ignoring invalid DATABASE_URL '{db_url}'.")
+        else:
+            print("Connecting via DATABASE_URL")
+            return psycopg2.connect(db_url, connect_timeout=10)
+
+    host = os.environ.get('DB_HOST', 'localhost').strip() or 'localhost'
+    running_in_container = os.path.exists('/.dockerenv')
+    if host == 'db' and not running_in_container:
+        print("Host 'db' unreachable outside Docker, using localhost instead.")
+        host = 'localhost'
+
     database = os.environ.get('DB_NAME', '').strip()
     user = os.environ.get('DB_USER', '').strip()
     password = os.environ.get('DB_PASSWORD', '').strip()
     port = os.environ.get('DB_PORT', '5432').strip()
-    
+    sslmode = os.environ.get('DB_SSLMODE', 'disable').strip() or 'disable'
+
     print(f"Connecting to: {host}:{port}/{database} as {user}")
-    
+
     return psycopg2.connect(
         host=host,
         database=database,
         user=user,
         password=password,
         port=int(port),
-        sslmode='require',
+        sslmode=sslmode,
         connect_timeout=10
     )
 
