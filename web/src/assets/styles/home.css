@@ -1,0 +1,55 @@
+@keyframes typing {
+    from {
+        width: 0
+    }
+    to {
+        width: 100%
+    }
+}
+@keyframes blink-caret {
+    from,
+    to {
+        border-color: transparent
+    }
+    50% {
+        border-color: #e2e8f0;
+    }
+}
+.typing-text {
+    overflow: hidden;
+    /* display:inline-block; */
+    border-right: .15em solid #e2e8f0;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .05em;
+    animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+    /* animation: typing 12s steps(300, end) forwards, blink 0.7s step-end infinite; */
+}
+    
+.typing-text-long {
+    animation-duration: 5.5s;
+    display:inline-block;
+    overflow:hidden;
+            
+}
+.typing-text-delay-1 {
+    animation-delay: 3.5s;
+    animation-fill-mode: both;
+}
+.typing-text-delay-2 {
+    animation-delay: 9s;
+    animation-fill-mode: both;
+}
+.typing-text-delay-3 {
+    animation-delay: 14.5s;
+    animation-fill-mode: both;
+}
+body {
+    background-image: linear-gradient(to bottom right, #0a192f, #172a46);
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+}
+.material-icons {
+    font-size: 30px;
+    vertical-align: middle;
+}

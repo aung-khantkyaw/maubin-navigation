@@ -1,0 +1,62 @@
+{
+  "brand": "Maubin Navigation",
+  "brandShort": "DMM",
+  "nav": {
+    "login": "Log In",
+    "signup": "Sign Up",
+    "logout": "Sign Out",
+    "accountSettings": "Account Settings",
+    "openMap": "Open Interactive Map",
+    "home": "Home",
+    "map": "Map",
+    "profile": "Profile",
+    "dashboard": "Dashboard"
+  },
+  "hero": {
+    "title": "Maubin Navigation",
+    "subtitle": "Plan meaningful journeys across Myanmar's historic cities, sacred pagodas, colonial avenues, vibrant markets and cultural landscapes. We help you explore rich heritage while finding the shortest smart routes between landmarks.",
+    "createAccount": "Create Free Account"
+  },
+  "features": {
+    "cityHeritage": "City heritage summaries",
+    "smartRouting": "Smart shortest-path routing",
+    "landmarkDetails": "Landmark details & history",
+    "customTravel": "Custom travel planning (coming)"
+  },
+  "timeline": {
+    "title": "Myanmar Historical Timeline",
+    "subtitle": "Explore key periods that shaped Myanmar's cultural and political landscape. Expand any era for a concise contextual description.",
+    "expand": "Expand",
+    "collapse": "Collapse"
+  },
+  "notFound": {
+    "code": "404",
+    "title": "Page not found",
+    "subtitle": "We can’t find that route.",
+    "home": "Go Home"
+  },
+  "greeting": "Hi, {{name}}",
+  "roles": {
+    "admin": "Administrator",
+    "coordinator": "Coordinator",
+    "user": "Explorer"
+  },
+  "footer": {
+    "badge": "Plan smarter",
+    "title": "Maubin Navigation",
+    "tagline": "Plan smarter journeys across Maubin with history, highlights, and intelligent routing.",
+    "linksTitle": "Quick links",
+    "links": {
+      "home": "Home",
+      "map": "Interactive map",
+      "timeline": "History timeline"
+    },
+    "supportTitle": "Need help?",
+    "support": {
+      "email": "aungkhantkyaw.info@gmail.com",
+      "center": "Visit the help center"
+    },
+    "status": "Always exploring new paths together.",
+    "copyright": "Maubin Navigation"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "backHome": "Back Home",
+  "routesIn": "Routes in {{cityName}} Township",
+  "exploreMap": "Explore map",
+  "showAllPhotos": "Show all photos ({{count}})",
+  "photoGalleryComingSoon": "Photo gallery coming soon.",
+  "photoGalleryWillAppear": "Photo gallery will appear once city images are available.",
+  "tabs": {
+    "profile": "Profile",
+    "locations": "Locations",
+    "visitSpots": "Visit Spots",
+    "restaurants": "Restaurants",
+    "hotels": "Hotels"
+  },
+  "categories": {
+    "all": "All Locations",
+    "public_and_civic": "Public & Civic",
+    "transportation": "Transportation",
+    "entertainment_and_leisure": "Entertainment & Leisure",
+    "commerce": "Commerce",
+    "education_and_culture": "Education & Culture",
+    "religious": "Religious",
+    "residential_and_industrial": "Residential & Industrial",
+    "other": "Other"
+  },
+  "locations": {
+    "title": "Locations in {{cityName}}",
+    "filterByCategory": "Filter by Category",
+    "noLocationsFound": "No locations found for this category.",
+    "tryAnotherCategory": "Try selecting another category to explore more locations.",
+    "locationsCount": "{{count}} location",
+    "locationsCount_plural": "{{count}} locations"
+  },
+  "profile": {
+    "profileOf": "Profile of {{cityName}}",
+    "fromRiverGateway": "From river gateway to cultural heart of the delta",
+    "clickCategory": "Click a category above to explore different aspects",
+    "informationAbout": "Information about {{cityName}}",
+    "loadingContent": "Loading content...",
+    "noContentAvailable": "No content available for this category.",
+    "noContentFound": "No content found for this category. Please select another category or check back later.",
+    "gatheringDetails": "We're gathering narrative details for {{cityName}}. Please select a category above to view specific information."
+  },
+  "relatedLocations": {
+    "title": "Related Locations: {{category}}",
+    "loadingLocations": "Loading locations...",
+    "loadingRelated": "Loading related locations...",
+    "locationsFound": "{{count}} location found",
+    "locationsFound_plural": "{{count}} locations found",
+    "unnamedLocation": "Unnamed Location",
+    "noDescriptionAvailable": "No description available.",
+    "viewDetails": "View details"
+  },
+  "visitSpots": {
+    "title": "Places to Visit",
+    "subtitle": "Handpicked sights combining culture, nature, and architecture",
+    "noSpots": "We don't have visit spots for this city yet. Check back soon.",
+    "viewPhotos": "View photos"
+  },
+  "restaurants": {
+    "title": "Restaurants",
+    "subtitle": "Taste the delta with fresh seafood, street eats, and tea-house classics",
+    "noRestaurants": "Dining recommendations will appear here once restaurants are added for this city."
+  },
+  "hotels": {
+    "title": "Hotels",
+    "subtitle": "Stay near canals, mangroves, and heritage quarters",
+    "noHotels": "Accommodation options will be listed once hotels are catalogued for this city.",
+    "viewGallery": "View gallery",
+    "bookNow": "Book now"
+  },
+  "footer": {
+    "readyToExplore": "Ready to explore",
+    "planYourAdventure": "Plan your {{cityName}} adventure today",
+    "copyright": "© {{year}} Routing AI. Crafted for the ASEAN Digital Awards 2026 showcase."
+  },
+  "modal": {
+    "photoCollection": "Photo collection",
+    "noImagesAvailable": "No images available.",
+    "onceImagesAdded": "Once images are added for this location, they will appear here."
+  },
+  "comingSoon": {
+    "badge": "Coming soon",
+    "routeGuideOnTheWay": "{{cityName}} route guide is on the way",
+    "notPublished": "We haven't published a detailed itinerary for {{cityName}} just yet. Explore our existing guides or head back to the interactive map to keep planning your adventure.",
+    "goHome": "Go home",
+    "openMap": "Open map"
+  },
+  "loading": {
+    "preparing": "Preparing {{cityName}} guide..."
+  },
+  "errors": {
+    "cityNotFound": "City not found in our dataset just yet.",
+    "couldNotLoad": "We couldn't load this city right now. Please try again shortly.",
+    "notPublishedYet": "We haven't published a detailed itinerary for {{cityName}} just yet. Check the map for other destinations."
+  }
+}

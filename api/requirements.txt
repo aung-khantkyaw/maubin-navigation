@@ -1,0 +1,7 @@
+Flask
+flask-cors
+Flask-JWT-Extended
+geopy
+psycopg2-binary
+python-dotenv
+gunicorn

@@ -1,0 +1,58 @@
+{
+  "profile": {
+    "pretitle": "Township Profile",
+    "title": "Maubin Township",
+    "description": "After the British colonial government annexed Bago City in 1852, Lower Myanmar was organized as Bago Division. Bago Division was divided into three districts: Hanthawaddy District, Hinthada District, and Pathein District. At that time, the location of Maubin was just a small village included in the Dala Township subdivision of Hanthawaddy District. In 1875, a new district named Thongwa District was expanded and formed within Bago Division. In 1875, the first Deputy Commissioner of Thongwa District, S.T. Smith, prepared the village where Maubin is located to be the district headquarters. In 1876, the Thongwa District office was moved from Thongwa and opened in the small village location of Maubin. It came to be called Maubin City because there was a large Ma-u tree at the head of the village.",
+    "stats": {
+      "population": {
+        "label": "Population",
+        "value": "296,382",
+        "detail": "2024 Population and Housing Census Provisional Results"
+      },
+      "area": {
+        "label": "Area",
+        "value": "1,334.82 km²",
+        "detail": "515.38 sq mi"
+      }
+    }
+  },
+  "gallery": {
+    "items": [
+      {
+        "src": "img5.jpg",
+        "alt": "Clock tower in Maubin"
+      },
+      {
+        "src": "img2.jpg",
+        "alt": "Shwe Phone Myint Pagoda"
+      },
+      {
+        "src": "img3.jpg",
+        "alt": "Sein Mya Kantha Pagoda"
+      },
+      {
+        "src": "img6.jpg",
+        "alt": "Local market produce"
+      },
+      {
+        "src": "img7.jpg",
+        "alt": "Polytechnic University Maubin"
+      },
+      {
+        "src": "img1.jpg",
+        "alt": "Maubin University"
+      },
+      {
+        "src": "img4.jpg",
+        "alt": "စိုက်မွေး"
+      },
+      {
+        "src": "img8.jpg",
+        "alt": "B.E.H.S 1 Maubin"
+      }
+    ]
+  },
+  "cta": {
+    "button": "Explore Maubin"
+  }
+}
