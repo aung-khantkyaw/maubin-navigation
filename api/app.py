@@ -18,10 +18,11 @@ from dotenv import load_dotenv
 import datetime
 from functools import wraps
 import re
-from werkzeug.utils import secure_filename
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import cloudinary
+import cloudinary.uploader
 
 psycopg2.extras.register_uuid()
 
@@ -52,6 +53,29 @@ CORS(app,
      allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 jwt = JWTManager(app)
+
+cloudinary.config(
+    cloud_name=env_value("CLOUDINARY_CLOUD_NAME"),
+    api_key=env_value("CLOUDINARY_API_KEY"),
+    api_secret=env_value("CLOUDINARY_API_SECRET"),
+    secure=True,
+)
+
+def save_uploaded_image(file_storage):
+    """Upload image to Cloudinary and return its URL."""
+    if not file_storage or not file_storage.filename:
+        return None
+    if not allowed_file(file_storage.filename):
+        raise ValueError("Unsupported file type. Allowed types: png, jpg, jpeg, gif")
+
+    upload_result = cloudinary.uploader.upload(
+        file_storage,
+        folder=env_value("CLOUDINARY_UPLOAD_FOLDER", "maubin-navigation"),
+        resource_type="image",
+        unique_filename=True,
+        overwrite=False,
+    )
+    return upload_result.get("secure_url")
 
 # Database connection function
 def get_db_connection():
@@ -106,35 +130,9 @@ def get_db_connection():
         app.logger.error(f"Unexpected database error: {exc}")
         raise
 
-# File upload configuration
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
-
-print("Upload folder set to:", UPLOAD_FOLDER)
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-def save_uploaded_image(file_storage):
-    """Persist an uploaded image and return its public URL."""
-    if not file_storage or not file_storage.filename:
-        return None
-
-    if not allowed_file(file_storage.filename):
-        raise ValueError("Unsupported file type. Allowed types: png, jpg, jpeg, gif")
-
-    safe_name = secure_filename(file_storage.filename)
-    unique_name = f"{uuid.uuid4().hex}_{safe_name}"
-    file_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_name)
-    file_storage.save(file_path)
-    return f"/uploads/{unique_name}"
-
 
 def save_uploaded_images_from_request():
     """Persist all uploaded images from the current request and return their URLs."""
@@ -159,7 +157,7 @@ def save_uploaded_images_from_request():
 
 @app.route('/uploads/<path:filename>')
 def serve_uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+    return jsonify({"msg": "Images are stored on Cloudinary."}), 410
 
 def extract_normalized_payload():
     """Return incoming data as a normalized dict and flag for multipart payloads."""
