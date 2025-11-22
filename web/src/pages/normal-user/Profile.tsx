@@ -294,7 +294,10 @@ export default function Profile() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 shadow-inner shadow-slate-100 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100"
-                      placeholder={t("profilePage.account.passwordPlaceholder") ?? undefined}
+                      placeholder={
+                        t("profilePage.account.passwordPlaceholder") ??
+                        undefined
+                      }
                     />
                   </label>
                   <button
@@ -340,11 +343,21 @@ export default function Profile() {
                       <table className="w-full text-left text-sm text-slate-600">
                         <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                           <tr>
-                            <th className="px-4 py-3">{t("profilePage.history.table.from")}</th>
-                            <th className="px-4 py-3">{t("profilePage.history.table.to")}</th>
-                            <th className="px-4 py-3">{t("profilePage.history.table.distance")}</th>
-                            <th className="px-4 py-3">{t("profilePage.history.table.duration")}</th>
-                            <th className="px-4 py-3">{t("profilePage.history.table.date")}</th>
+                            <th className="px-4 py-3">
+                              {t("profilePage.history.table.from")}
+                            </th>
+                            <th className="px-4 py-3">
+                              {t("profilePage.history.table.to")}
+                            </th>
+                            <th className="px-4 py-3">
+                              {t("profilePage.history.table.distance")}
+                            </th>
+                            <th className="px-4 py-3">
+                              {t("profilePage.history.table.duration")}
+                            </th>
+                            <th className="px-4 py-3">
+                              {t("profilePage.history.table.date")}
+                            </th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -366,7 +379,9 @@ export default function Profile() {
                                 <td className="px-4 py-3 text-sm text-slate-600">
                                   {route.distance
                                     ? t("profilePage.units.kilometers", {
-                                        value: (route.distance / 1000).toFixed(2),
+                                        value: (route.distance / 1000).toFixed(
+                                          2
+                                        ),
                                       })
                                     : "—"}
                                 </td>
