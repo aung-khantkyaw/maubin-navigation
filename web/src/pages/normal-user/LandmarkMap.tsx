@@ -1628,7 +1628,7 @@ function LandmarkMap() {
                         {activeLocationImages.slice(1).map((url, index) => (
                           <img
                             key={`${activeLocation.location.id}-thumb-${index}`}
-                            src={`${API_BASE_URL}/${url}`}
+                            src={`${url}`}
                             alt={`${
                               activeLocationNames?.primary ??
                               activeLocation.location.id
@@ -1651,9 +1651,9 @@ function LandmarkMap() {
                     </p>
                   ) : null}
                   {activeLocation.descriptionText ? (
-                    <p className="leading-relaxed">
+                    <div className="leading-relaxed max-h-48 overflow-y-auto pr-1">
                       {activeLocation.descriptionText}
-                    </p>
+                    </div>
                   ) : (
                     <p className="italic">No description provided.</p>
                   )}

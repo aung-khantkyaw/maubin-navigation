@@ -1656,7 +1656,7 @@ export default function Details() {
                                   activeLanguage === "mm"
                                     ? "leading-relaxed"
                                     : ""
-                                }`}
+                                } min-h-[200px] max-h-[200px] overflow-y-auto pr-1`}
                               >
                                 {location.description}
                               </p>
