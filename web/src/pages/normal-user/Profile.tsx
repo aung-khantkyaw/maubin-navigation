@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Header } from "@/components/header";
 import {
@@ -29,6 +30,7 @@ type RouteHistoryItem = {
 
 export default function Profile() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -82,35 +84,42 @@ export default function Profile() {
 
     return [
       {
-        label: "Trips logged",
-        value: routeHistory.length > 0 ? routeHistory.length : "No trips yet",
+        label: t("profilePage.stats.tripsLabel"),
+        value:
+          routeHistory.length > 0
+            ? String(routeHistory.length)
+            : t("profilePage.stats.tripsEmpty"),
         icon: RouteIcon,
       },
       {
-        label: "Total distance",
+        label: t("profilePage.stats.distanceLabel"),
         value:
           totalDistanceMeters > 0
-            ? `${(totalDistanceMeters / 1000).toFixed(1)} km`
-            : "0 km",
+            ? t("profilePage.units.kilometers", {
+                value: (totalDistanceMeters / 1000).toFixed(1),
+              })
+            : t("profilePage.units.kilometers", { value: 0 }),
         icon: Globe2,
       },
       {
-        label: "Avg duration",
+        label: t("profilePage.stats.avgDurationLabel"),
         value:
           averageDuration > 0
-            ? `${Math.round(averageDuration)} min`
-            : "Not available",
+            ? t("profilePage.units.minutes", {
+                value: Math.round(averageDuration),
+              })
+            : t("profilePage.stats.avgDurationEmpty"),
         icon: CalendarClock,
       },
       {
-        label: "Latest trip",
+        label: t("profilePage.stats.latestTripLabel"),
         value: latestTrip
           ? new Date(latestTrip).toLocaleDateString()
-          : "Awaiting your journey",
+          : t("profilePage.stats.latestTripEmpty"),
         icon: BadgeCheck,
       },
     ];
-  }, [routeHistory]);
+  }, [routeHistory, t]);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,13 +136,13 @@ export default function Profile() {
       });
       const data = await res.json();
       if (!res.ok || !data?.is_success) {
-        toast.error(data?.msg || "Update failed");
+        toast.error(data?.msg || t("profilePage.notifications.updateFailure"));
       } else {
-        toast.success("Account updated successfully");
+        toast.success(t("profilePage.notifications.updateSuccess"));
         window.localStorage.setItem("user", JSON.stringify({ ...user }));
       }
     } catch {
-      toast.error("Network error");
+      toast.error(t("profilePage.notifications.networkError"));
     } finally {
       setLoading(false);
     }
@@ -155,16 +164,14 @@ export default function Profile() {
               <div className="max-w-2xl space-y-6">
                 <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-500">
                   <ShieldCheck className="size-4 text-emerald-500" />
-                  Trusted explorer profile
+                  {t("profilePage.badge")}
                 </span>
                 <div>
                   <h1 className="text-4xl font-bold text-slate-900 sm:text-5xl">
-                    Your Journey Dashboard
+                    {t("profilePage.title")}
                   </h1>
                   <p className="mt-4 text-base text-slate-600 sm:text-lg">
-                    Update your account details and revisit the routes
-                    you&apos;ve discovered across Myanmar. Keep exploring—the
-                    Golden Land has many stories left to tell.
+                    {t("profilePage.subtitle")}
                   </p>
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -193,9 +200,11 @@ export default function Profile() {
                     <UserRound className="size-7" />
                   </div>
                   <div>
-                    <p className="text-sm text-slate-500">Signed in as</p>
+                    <p className="text-sm text-slate-500">
+                      {t("profilePage.signedInAs")}
+                    </p>
                     <p className="text-lg font-semibold text-slate-900">
-                      {user.username || "Explorer"}
+                      {user.username || t("roles.user")}
                     </p>
                     <p className="text-xs text-slate-500">{user.email}</p>
                   </div>
@@ -206,7 +215,7 @@ export default function Profile() {
                     className="relative w-full flex items-center justify-center gap-2 rounded-2xl border border-blue-200 bg-gradient-to-r from-blue-50 via-indigo-50 to-violet-50 px-6 py-4 text-sm font-semibold text-blue-700 shadow-lg transition hover:border-blue-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-200"
                   >
                     <ShieldCheck className="size-5" />
-                    <span>Go to Admin Dashboard</span>
+                    <span>{t("profilePage.buttons.admin")}</span>
                   </button>
                 ) : user.user_type === "collaborator" ? (
                   <button
@@ -214,7 +223,7 @@ export default function Profile() {
                     className="relative w-full flex items-center justify-center gap-2 rounded-2xl border border-cyan-200 bg-gradient-to-r from-cyan-50 via-teal-50 to-emerald-50 px-6 py-4 text-sm font-semibold text-cyan-700 shadow-lg transition hover:border-cyan-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-200"
                   >
                     <BadgeCheck className="size-5" />
-                    <span>Go to Collaborator Dashboard</span>
+                    <span>{t("profilePage.buttons.collaborator")}</span>
                   </button>
                 ) : user.user_type === "normal_user" ? (
                   <button
@@ -222,7 +231,7 @@ export default function Profile() {
                     className="relative w-full flex items-center justify-center gap-2 rounded-2xl border border-emerald-200 bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 px-6 py-4 text-sm font-semibold text-emerald-700 shadow-lg transition hover:border-emerald-300 hover:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200"
                   >
                     <UserPlus className="size-5" />
-                    <span>Become a Collaborator</span>
+                    <span>{t("profilePage.buttons.upgrade")}</span>
                   </button>
                 ) : null}
               </div>
@@ -236,11 +245,10 @@ export default function Profile() {
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">
-                      Account preferences
+                      {t("profilePage.account.title")}
                     </h2>
                     <p className="text-sm text-slate-500">
-                      Refresh your details to keep your travel companion in
-                      sync.
+                      {t("profilePage.account.subtitle")}
                     </p>
                   </div>
                 </div>
@@ -249,7 +257,7 @@ export default function Profile() {
                   <label className="space-y-2 text-sm">
                     <span className="inline-flex items-center gap-2 text-slate-600">
                       <UserRound className="size-4 text-emerald-500" />
-                      Explorer name
+                      {t("profilePage.account.nameLabel")}
                     </span>
                     <input
                       type="text"
@@ -264,7 +272,7 @@ export default function Profile() {
                   <label className="space-y-2 text-sm">
                     <span className="inline-flex items-center gap-2 text-slate-600">
                       <Globe2 className="size-4 text-emerald-500" />
-                      Contact email
+                      {t("profilePage.account.emailLabel")}
                     </span>
                     <input
                       type="email"
@@ -279,14 +287,14 @@ export default function Profile() {
                   <label className="space-y-2 text-sm">
                     <span className="inline-flex items-center gap-2 text-slate-600">
                       <ShieldCheck className="size-4 text-emerald-500" />
-                      New password
+                      {t("profilePage.account.passwordLabel")}
                     </span>
                     <input
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-base text-slate-900 shadow-inner shadow-slate-100 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-100"
-                      placeholder="Leave blank to keep current"
+                      placeholder={t("profilePage.account.passwordPlaceholder") ?? undefined}
                     />
                   </label>
                   <button
@@ -297,7 +305,9 @@ export default function Profile() {
                       loading && "animate-pulse"
                     )}
                   >
-                    {loading ? "Saving changes…" : "Save profile"}
+                    {loading
+                      ? t("profilePage.account.saving")
+                      : t("profilePage.account.save")}
                   </button>
                 </form>
               </div>
@@ -306,11 +316,10 @@ export default function Profile() {
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h2 className="text-xl font-semibold text-slate-900 sm:text-2xl">
-                      Route history
+                      {t("profilePage.history.title")}
                     </h2>
                     <p className="text-sm text-slate-500">
-                      Every expedition you plan is stored here with distance and
-                      timestamps.
+                      {t("profilePage.history.subtitle")}
                     </p>
                   </div>
                 </div>
@@ -319,11 +328,10 @@ export default function Profile() {
                   <div className="mt-10 flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center text-slate-500">
                     <RouteIcon className="mb-4 size-10 text-emerald-400" />
                     <h3 className="text-lg font-semibold text-slate-900">
-                      No journeys catalogued yet
+                      {t("profilePage.history.emptyTitle")}
                     </h3>
                     <p className="mt-2 max-w-sm text-sm text-slate-500">
-                      Plan your first route to see it appear here with all the
-                      key details at a glance.
+                      {t("profilePage.history.emptyDescription")}
                     </p>
                   </div>
                 ) : (
@@ -332,11 +340,11 @@ export default function Profile() {
                       <table className="w-full text-left text-sm text-slate-600">
                         <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500">
                           <tr>
-                            <th className="px-4 py-3">From</th>
-                            <th className="px-4 py-3">To</th>
-                            <th className="px-4 py-3">Distance</th>
-                            <th className="px-4 py-3">Duration</th>
-                            <th className="px-4 py-3">Date</th>
+                            <th className="px-4 py-3">{t("profilePage.history.table.from")}</th>
+                            <th className="px-4 py-3">{t("profilePage.history.table.to")}</th>
+                            <th className="px-4 py-3">{t("profilePage.history.table.distance")}</th>
+                            <th className="px-4 py-3">{t("profilePage.history.table.duration")}</th>
+                            <th className="px-4 py-3">{t("profilePage.history.table.date")}</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
@@ -357,12 +365,16 @@ export default function Profile() {
                                 </td>
                                 <td className="px-4 py-3 text-sm text-slate-600">
                                   {route.distance
-                                    ? `${(route.distance / 1000).toFixed(2)} km`
+                                    ? t("profilePage.units.kilometers", {
+                                        value: (route.distance / 1000).toFixed(2),
+                                      })
                                     : "—"}
                                 </td>
                                 <td className="px-4 py-3 text-sm text-slate-600">
                                   {route.duration_min
-                                    ? `${Math.round(route.duration_min)} min`
+                                    ? t("profilePage.units.minutes", {
+                                        value: Math.round(route.duration_min),
+                                      })
                                     : "—"}
                                 </td>
                                 <td className="px-4 py-3 text-sm text-slate-600">

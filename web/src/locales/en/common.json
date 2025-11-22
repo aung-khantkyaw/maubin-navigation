@@ -41,6 +41,58 @@
     "coordinator": "Coordinator",
     "user": "Explorer"
   },
+  "profilePage": {
+    "badge": "Trusted explorer profile",
+    "title": "Your Journey Dashboard",
+    "subtitle": "Update your account details and revisit the routes you've discovered across Maubin.",
+    "stats": {
+      "tripsLabel": "Trips logged",
+      "tripsEmpty": "No trips yet",
+      "distanceLabel": "Total distance",
+      "avgDurationLabel": "Avg duration",
+      "avgDurationEmpty": "Not available",
+      "latestTripLabel": "Latest trip",
+      "latestTripEmpty": "Awaiting your journey"
+    },
+    "signedInAs": "Signed in as",
+    "buttons": {
+      "admin": "Go to Admin Dashboard",
+      "collaborator": "Go to Collaborator Dashboard",
+      "upgrade": "Become a Collaborator"
+    },
+    "account": {
+      "title": "Account preferences",
+      "subtitle": "Refresh your details to keep your travel companion in sync.",
+      "nameLabel": "Explorer name",
+      "emailLabel": "Contact email",
+      "passwordLabel": "New password",
+      "passwordPlaceholder": "Leave blank to keep current",
+      "save": "Save profile",
+      "saving": "Saving changes…"
+    },
+    "history": {
+      "title": "Route history",
+      "subtitle": "Every expedition you plan is stored here with distance and timestamps.",
+      "emptyTitle": "No journeys catalogued yet",
+      "emptyDescription": "Plan your first route to see it appear here with all the key details at a glance.",
+      "table": {
+        "from": "From",
+        "to": "To",
+        "distance": "Distance",
+        "duration": "Duration",
+        "date": "Date"
+      }
+    },
+    "notifications": {
+      "updateSuccess": "Account updated successfully",
+      "updateFailure": "Update failed",
+      "networkError": "Network error"
+    },
+    "units": {
+      "kilometers": "{{value}} km",
+      "minutes": "{{value}} min"
+    }
+  },
   "footer": {
     "badge": "Plan smarter",
     "title": "Maubin Navigation",
