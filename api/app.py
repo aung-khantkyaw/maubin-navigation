@@ -18,6 +18,7 @@ from dotenv import load_dotenv
 import datetime
 from functools import wraps
 import re
+from werkzeug.utils import secure_filename
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -130,9 +131,12 @@ def get_db_connection():
         app.logger.error(f"Unexpected database error: {exc}")
         raise
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def save_uploaded_images_from_request():
     """Persist all uploaded images from the current request and return their URLs."""

@@ -1138,7 +1138,7 @@ function LandmarkMap() {
       <Header />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[360px_1fr_360px] lg:gap-6 items-start pt-4">
-        <aside className="order-2 lg:order-1 bg-white rounded-xl border shadow-sm overflow-hidden">
+        <aside className="order-1 lg:order-1 bg-white rounded-xl border shadow-sm overflow-hidden">
           <div className="border-b px-5 py-4">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
               Cities
@@ -1242,7 +1242,7 @@ function LandmarkMap() {
           </div>
         </aside>
 
-        <section className="order-1 lg:order-2 relative z-0">
+        <section className="order-2 lg:order-2 relative z-0">
           <div className="pointer-events-none absolute right-6 top-6 z-[1000] flex gap-2 text-xs">
             {Object.entries(BASE_LAYERS).map(([key, layer]) => {
               const typedKey = key as BaseLayerKey;
@@ -1369,7 +1369,6 @@ function LandmarkMap() {
                         }}
                       >
                         <Popup>
-                          {/* <div className="w-[240px] rounded-2xl border border-slate-200 bg-white p-3 shadow-lg"> */}
                           <div className="space-y-2 text-sm text-slate-700">
                             <div className="flex items-start gap-2">
                               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-900/90 text-white shadow-md">
@@ -1441,7 +1440,6 @@ function LandmarkMap() {
                               Cancel
                             </button>
                           </div>
-                          {/* </div> */}
                         </Popup>
                       </Marker>
                     );
