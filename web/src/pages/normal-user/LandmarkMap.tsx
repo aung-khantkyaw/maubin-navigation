@@ -541,6 +541,10 @@ function LandmarkMap() {
     null
   );
   const [mapFocusZoom, setMapFocusZoom] = useState(13);
+  const [routePlanner, setRoutePlanner] = useState<{
+    fromId?: string;
+    toId?: string;
+  }>({});
 
   const { i18n } = useTranslation();
   const activeLanguage = i18n.resolvedLanguage ?? i18n.language ?? "en";
@@ -595,6 +599,75 @@ function LandmarkMap() {
       fallback: string
     ) => getNamePair(source, fallback).primary,
     [getNamePair]
+  );
+
+  const requestRoute = useCallback(
+    async (
+      start: { position: LatLngTuple; label: string },
+      end: { position: LatLngTuple; label: string },
+      locationId: string
+    ) => {
+      const [startLat, startLon] = start.position;
+      const [endLat, endLon] = end.position;
+
+      const token =
+        typeof window !== "undefined"
+          ? window.localStorage.getItem("access_token")
+          : null;
+
+      const response = await fetch(`${API_BASE_URL}/routes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+        body: JSON.stringify({
+          start_lon: startLon,
+          start_lat: startLat,
+          end_lon: endLon,
+          end_lat: endLat,
+          optimization: "shortest",
+          start_name: start.label,
+          end_name: end.label,
+        }),
+      });
+
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok || !payload?.is_success) {
+        throw new Error(payload?.msg ?? "Unable to plan a route right now.");
+      }
+
+      const coordinates: unknown = payload.data?.route?.geometry?.coordinates;
+      const polylineCoordinates: LatLngTuple[] = Array.isArray(coordinates)
+        ? (coordinates as unknown[])
+            .filter(
+              (coord): coord is [number, number] =>
+                Array.isArray(coord) && coord.length === 2
+            )
+            .map(([lon, lat]) => [lat, lon] as LatLngTuple)
+        : [];
+
+      if (!polylineCoordinates.length) {
+        throw new Error(
+          "We couldn't draw this route. Try another destination."
+        );
+      }
+
+      setRoutePolyline(polylineCoordinates);
+      setRouteSummary({
+        distance:
+          typeof payload.data?.distance === "number"
+            ? payload.data.distance
+            : null,
+        duration:
+          typeof payload.data?.estimated_time === "number"
+            ? payload.data.estimated_time
+            : null,
+        locationId,
+      });
+    },
+    []
   );
 
   const getMarkerIcon = useMemo(() => {
@@ -745,6 +818,53 @@ function LandmarkMap() {
     setRouteSummary(null);
   }, [selectedCity?.id]);
 
+  const handlePlanRouteBetweenLocations = async () => {
+    const { fromId, toId } = routePlanner;
+    if (!fromId || !toId || fromId === toId) return;
+
+    const fromEntry = locationLookup.get(fromId);
+    const toEntry = locationLookup.get(toId);
+    if (!fromEntry || !toEntry) {
+      toast.error("Selected locations are unavailable.");
+      return;
+    }
+
+    setIsFetchingRoute(true);
+    setActiveLocationId(toId);
+    try {
+      await requestRoute(
+        {
+          position: fromEntry.position,
+          label:
+            getPrimaryName(
+              fromEntry.location,
+              fromEntry.location.english_name ||
+                fromEntry.location.burmese_name ||
+                fromEntry.location.id
+            ) ?? "Start",
+        },
+        {
+          position: toEntry.position,
+          label:
+            getPrimaryName(
+              toEntry.location,
+              toEntry.location.english_name ||
+                toEntry.location.burmese_name ||
+                toEntry.location.id
+            ) ?? "End",
+        },
+        toId
+      );
+      toast.success("Route ready.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to plan route."
+      );
+    } finally {
+      setIsFetchingRoute(false);
+    }
+  };
+
   const handleSelectCity = (city: City) => {
     setSelectedCity(city);
     setRoutePolyline([]);
@@ -854,6 +974,14 @@ function LandmarkMap() {
       })
       .filter((entry): entry is LocationEntry => entry !== null);
   }, [cityLocations, getLocalizedText]);
+
+  const locationLookup = useMemo(
+    () =>
+      new Map<string, LocationEntry>(
+        locationEntries.map((entry) => [entry.location.id, entry])
+      ),
+    [locationEntries]
+  );
 
   // Handle location from URL query parameter
   useEffect(() => {
@@ -1232,6 +1360,82 @@ function LandmarkMap() {
                   ) : (
                     <p className="italic">No description provided.</p>
                   )}
+                  <div className="rounded-xl border bg-white p-4 space-y-3">
+                    <h3 className="text-sm font-semibold text-slate-800">
+                      Route planner
+                    </h3>
+                    <label className="text-xs font-medium text-slate-500">
+                      From
+                    </label>
+                    <select
+                      className="w-full rounded-lg border px-3 py-2 text-sm"
+                      value={routePlanner.fromId ?? ""}
+                      onChange={(e) =>
+                        setRoutePlanner((prev) => ({
+                          ...prev,
+                          fromId: e.target.value || undefined,
+                        }))
+                      }
+                    >
+                      <option value="">Select starting location</option>
+                      {locationEntries.map((entry) => (
+                        <option
+                          key={entry.location.id}
+                          value={entry.location.id}
+                        >
+                          {getPrimaryName(
+                            entry.location,
+                            entry.location.english_name ||
+                              entry.location.burmese_name ||
+                              entry.location.id
+                          )}
+                        </option>
+                      ))}
+                    </select>
+
+                    <label className="text-xs font-medium text-slate-500">
+                      To
+                    </label>
+                    <select
+                      className="w-full rounded-lg border px-3 py-2 text-sm"
+                      value={routePlanner.toId ?? ""}
+                      onChange={(e) =>
+                        setRoutePlanner((prev) => ({
+                          ...prev,
+                          toId: e.target.value || undefined,
+                        }))
+                      }
+                    >
+                      <option value="">Select destination</option>
+                      {locationEntries.map((entry) => (
+                        <option
+                          key={entry.location.id}
+                          value={entry.location.id}
+                        >
+                          {getPrimaryName(
+                            entry.location,
+                            entry.location.english_name ||
+                              entry.location.burmese_name ||
+                              entry.location.id
+                          )}
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      type="button"
+                      onClick={handlePlanRouteBetweenLocations}
+                      disabled={
+                        isFetchingRoute ||
+                        !routePlanner.fromId ||
+                        !routePlanner.toId ||
+                        routePlanner.fromId === routePlanner.toId
+                      }
+                      className="w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-50"
+                    >
+                      {isFetchingRoute ? "Planning…" : "Plan between locations"}
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="px-5 py-6 text-center text-sm text-muted-foreground">
@@ -1455,6 +1659,7 @@ function LandmarkMap() {
               Locations
             </h2>
           </div>
+
           <div className="flex flex-col lg:h-[calc(100vh-8rem)]">
             {selectedCity && locationEntries.length > 0 ? (
               <div className="border-b bg-muted/30 px-5 py-3">
